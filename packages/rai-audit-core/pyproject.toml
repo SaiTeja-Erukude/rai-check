@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rai-audit-core"
-version = "0.1.9"
+version = "0.1.10"
 description = "Shared audit engine, findings, reports, and CLI for the RAI Audit Kit"
 readme = "README.md"
 license = { file = "LICENSE" }

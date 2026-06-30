@@ -30,6 +30,11 @@ register_export_commands(export_app, console)
 def init(
     project: str = typer.Option("my-project", help="Project name"),
     output: Path = typer.Option(Path("audit.yaml"), help="Output config path"),
+    sample_data: bool = typer.Option(
+        True,
+        "--sample-data/--no-sample-data",
+        help="Write a sample predictions.csv beside the config",
+    ),
 ) -> None:
     """Scaffold a starter audit.yaml config file."""
     config = f"""schema_version: "1.0"
@@ -73,6 +78,42 @@ gate:
 """
     output.write_text(config, encoding="utf-8")
     console.print(f"[green]✓[/green] Created {output}")
+    if sample_data:
+        sample_path = output.parent / "predictions.csv"
+        if sample_path.exists():
+            console.print(f"[yellow]Skipped sample data; {sample_path} already exists[/yellow]")
+        else:
+            sample_path.write_text(_starter_predictions_csv(), encoding="utf-8")
+            console.print(f"[green]✓[/green] Created {sample_path}")
+
+
+def _starter_predictions_csv() -> str:
+    return """y_true,y_pred,group,feature_income,feature_tenure_months,feature_score
+0,0,A,52000,12,0.32
+1,1,A,61000,28,0.58
+0,0,B,84000,43,0.81
+1,1,B,47000,9,0.27
+0,1,C,76000,36,0.74
+1,1,C,68000,18,0.35
+0,0,A,91000,51,0.49
+1,0,A,56000,24,0.87
+0,0,B,73000,15,0.22
+1,1,B,95000,47,0.41
+0,0,C,50000,55,0.91
+1,1,C,81000,21,0.38
+0,0,A,88000,39,0.79
+1,1,A,59000,11,0.29
+0,0,B,79000,34,0.46
+1,0,B,64000,26,0.84
+0,0,C,99000,45,0.33
+1,1,C,71000,17,0.62
+0,1,A,90000,60,0.78
+1,1,A,54000,19,0.31
+0,0,B,83000,49,0.76
+1,1,B,66000,14,0.36
+0,0,C,87000,41,0.82
+1,1,C,62000,23,0.52
+"""
 
 
 @app.command("run")

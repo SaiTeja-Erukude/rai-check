@@ -82,6 +82,25 @@ def test_run_config_cli_command(tmp_path):
     assert "evidence-manifest.json" in result.output
 
 
+def test_init_creates_runnable_starter_files(tmp_path):
+    config_path = tmp_path / "audit.yaml"
+    runner = CliRunner()
+
+    init_result = runner.invoke(
+        app,
+        ["init", "--project", "loan-model", "--output", str(config_path)],
+    )
+
+    assert init_result.exit_code == 0
+    assert config_path.exists()
+    assert (tmp_path / "predictions.csv").exists()
+
+    run_result = runner.invoke(app, ["run", "--config", str(config_path)])
+
+    assert run_result.exit_code == 0
+    assert "Audit complete" in run_result.output
+
+
 def test_load_config_migrates_legacy_document(tmp_path):
     config_path = _write_config(tmp_path)
 
