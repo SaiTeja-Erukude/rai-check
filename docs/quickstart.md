@@ -39,6 +39,11 @@ rai-audit init --project loan-model
 rai-audit run --config audit.yaml
 ```
 
+`rai-audit init` writes a small starter `predictions.csv` beside `audit.yaml`, so
+the generated config can run immediately. Replace that CSV with captured model
+predictions, or update `audit.data` to point at your own file. For a classification
+audit the CSV needs `y_true` and `y_pred` columns by default.
+
 The configured runner writes the selected report formats and an
 `evidence-manifest.json` file. The manifest records input hashes, runtime details,
 installed RAI Audit package versions, the Git revision when available, and artifact

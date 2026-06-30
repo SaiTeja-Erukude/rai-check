@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rai-audit-kit"
-version = "0.1.8"
+version = "0.1.9"
 description = "Responsible AI (RAI) Audit Kit — evidence-grade audits for responsible, secure, and trustworthy AI systems"
 readme = "README.md"
 license = { file = "LICENSE" }

@@ -14,6 +14,7 @@ rai-audit init [--project NAME] [--output PATH]
 |--------|---------|-------------|
 | `--project` | `my-project` | Project name |
 | `--output` | `audit.yaml` | Output config path |
+| `--sample-data / --no-sample-data` | `--sample-data` | Write a starter `predictions.csv` beside the config |
 
 ---
 

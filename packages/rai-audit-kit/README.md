@@ -76,6 +76,10 @@ rai-audit init --project loan-model
 rai-audit run --config audit.yaml
 ```
 
+`rai-audit init` writes a starter `predictions.csv` beside `audit.yaml`; replace
+it with captured model predictions, or update `audit.data` to point at your CSV.
+Classification configs expect `y_true` and `y_pred` columns by default.
+
 Configured runs write report artifacts and an evidence manifest with input,
 environment, source-revision, and artifact hashes.
 
