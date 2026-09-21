@@ -1,17 +1,17 @@
-name: Test rai-audit-ml
+name: Test rai-check-ml
 
 on:
   push:
     branches:
       - main
     paths:
-      - "packages/rai-audit-ml/**"
-      - "packages/rai-audit-core/**"
+      - "packages/rai-check-ml/**"
+      - "packages/rai-check-core/**"
       - ".github/workflows/test-ml.yml"
   pull_request:
     paths:
-      - "packages/rai-audit-ml/**"
-      - "packages/rai-audit-core/**"
+      - "packages/rai-check-ml/**"
+      - "packages/rai-check-core/**"
 
 jobs:
   test:
@@ -22,5 +22,5 @@ jobs:
         with:
           python-version: "3.12"
       - run: uv venv
-      - run: uv pip install -e "packages/rai-audit-core" -e "packages/rai-audit-ml" pytest
-      - run: uv run pytest packages/rai-audit-ml/tests -v
+      - run: uv pip install -e "packages/rai-check-core" -e "packages/rai-check-ml" pytest
+      - run: uv run pytest packages/rai-check-ml/tests -v

@@ -1,8 +1,8 @@
-site_name: RAI Audit Kit
+site_name: RAI Check Kit
 site_description: Evidence-grade audits for responsible, secure, and trustworthy AI systems
-site_url: https://erukude.github.io/rai-audit-kit/
-repo_url: https://github.com/erukude/rai-audit-kit
-repo_name: erukude/rai-audit-kit
+site_url: https://erukude.github.io/rai-check-kit/
+repo_url: https://github.com/erukude/rai-check-kit
+repo_name: erukude/rai-check-kit
 edit_uri: edit/main/docs/
 
 theme:
@@ -49,6 +49,6 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/erukude/rai-audit-kit
+      link: https://github.com/erukude/rai-check-kit
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/rai-audit-kit/
+      link: https://pypi.org/project/rai-check-kit/

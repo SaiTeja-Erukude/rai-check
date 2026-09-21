@@ -1,11 +1,10 @@
 [tool.uv.workspace]
 members = [
-  "packages/rai-audit-core",
-  "packages/rai-audit-ml",
-  "packages/rai-audit-dl",
-  "packages/rai-audit-llm",
-  "packages/rai-audit-agents",
-  "packages/rai-audit-kit",
+  "packages/rai-check-core",
+  "packages/rai-check-ml",
+  "packages/rai-check-dl",
+  "packages/rai-check-genai",
+  "packages/rai-check-kit",
 ]
 
 [tool.ruff]
@@ -17,11 +16,17 @@ select = ["E", "F", "I", "UP"]
 
 [tool.pytest.ini_options]
 addopts = "--import-mode=importlib"
+pythonpath = [
+  "packages/rai-check-core/src",
+  "packages/rai-check-ml/src",
+  "packages/rai-check-genai/src",
+  "packages/rai-check-dl/src",
+  "packages/rai-check-kit/src",
+]
 testpaths = [
-  "packages/rai-audit-core/tests",
-  "packages/rai-audit-ml/tests",
-  "packages/rai-audit-llm/tests",
-  "packages/rai-audit-dl/tests",
-  "packages/rai-audit-agents/tests",
-  "packages/rai-audit-kit/tests",
+  "packages/rai-check-core/tests",
+  "packages/rai-check-ml/tests",
+  "packages/rai-check-genai/tests",
+  "packages/rai-check-dl/tests",
+  "packages/rai-check-kit/tests",
 ]

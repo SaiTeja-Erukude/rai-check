@@ -1,15 +1,17 @@
-# RAI Audit Kit
+# RAI Check Kit
 
 **Evidence-grade audits for responsible, secure, and trustworthy AI systems.**
 
-RAI Audit Kit is a Python toolkit that helps developers, researchers, and AI teams audit AI systems for fairness, robustness, security, transparency, and deployment readiness.
+RAI Check Kit is a Python toolkit that helps developers, researchers, and AI teams audit AI systems for fairness, robustness, security, transparency, and deployment readiness.
 
 ## Install
 
 ```bash
-pip install rai-audit-kit          # everything
-pip install rai-audit-ml           # ML audits only
-pip install rai-audit-core         # engine and reports only
+pip install rai-check-kit          # core + tabular ML
+pip install "rai-check-kit[all]"   # all modules
+pip install rai-check-ml           # ML audits only
+pip install rai-check-genai        # LLM, RAG, and agent audits only
+pip install rai-check-core         # engine and reports only
 ```
 
 ## Quick Example
@@ -33,9 +35,8 @@ report.to_model_card("model-card.md")
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| `rai-audit-core` | Shared engine, findings, reports, CLI | ✅ v0.1.0 |
-| `rai-audit-ml` | Tabular ML audits (classification, regression) | ✅ v0.1.0 |
-| `rai-audit-kit` | Meta-package: installs core + ml | ✅ v0.1.0 |
-| `rai-audit-dl` | Image, medical imaging, and scientific AI audits | ✅ Available |
-| `rai-audit-llm` | LLM and RAG audits | ✅ Available |
-| `rai-audit-agents` | Agent tool-use, memory, permission, and injection audits | ✅ Available |
+| `rai-check-core` | Shared engine, findings, reports, CLI | Available |
+| `rai-check-ml` | Tabular ML audits (classification, regression) | Available |
+| `rai-check-kit` | Meta-package: installs core + ml | Available |
+| `rai-check-dl` | Image, medical imaging, and scientific AI audits | Available |
+| `rai-check-genai` | LLM, RAG, and agentic AI audits | Available |

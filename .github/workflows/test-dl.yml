@@ -1,17 +1,17 @@
-name: Test rai-audit-dl
+name: Test rai-check-dl
 
 on:
   push:
     branches:
       - main
     paths:
-      - "packages/rai-audit-dl/**"
-      - "packages/rai-audit-core/**"
+      - "packages/rai-check-dl/**"
+      - "packages/rai-check-core/**"
       - ".github/workflows/test-dl.yml"
   pull_request:
     paths:
-      - "packages/rai-audit-dl/**"
-      - "packages/rai-audit-core/**"
+      - "packages/rai-check-dl/**"
+      - "packages/rai-check-core/**"
 
 jobs:
   test:
@@ -22,5 +22,5 @@ jobs:
         with:
           python-version: "3.12"
       - run: uv venv
-      - run: uv pip install -e "packages/rai-audit-core" -e "packages/rai-audit-dl" pytest
-      - run: uv run pytest packages/rai-audit-dl/tests -v
+      - run: uv pip install -e "packages/rai-check-core" -e "packages/rai-check-dl" pytest
+      - run: uv run pytest packages/rai-check-dl/tests -v

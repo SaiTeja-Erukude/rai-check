@@ -1,0 +1,26 @@
+name: Test rai-check-genai
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/rai-check-genai/**"
+      - "packages/rai-check-core/**"
+      - ".github/workflows/test-genai.yml"
+  pull_request:
+    paths:
+      - "packages/rai-check-genai/**"
+      - "packages/rai-check-core/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.12"
+      - run: uv venv
+      - run: uv pip install -e "packages/rai-check-core" -e "packages/rai-check-genai" pytest
+      - run: uv run pytest packages/rai-check-genai/tests -v

@@ -1,10 +1,11 @@
 name: Publish to PyPI
 
-# Triggered by a tag of the form:  rai-audit-<package>-v<semver>
+# Triggered by a tag of the form:  rai-check-<package>-v<semver>
 # Examples:
-#   rai-audit-core-v0.1.0
-#   rai-audit-ml-v0.2.1
-#   rai-audit-kit-v0.1.0
+#   rai-check-core-v0.1.0
+#   rai-check-ml-v0.2.1
+#   rai-check-genai-v0.1.0
+#   rai-check-kit-v0.1.0
 #
 # Each package is published independently. The tag determines which
 # package directory is built. Versions in the tag and pyproject.toml
@@ -13,12 +14,11 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - "rai-audit-core-v*"
-      - "rai-audit-ml-v*"
-      - "rai-audit-dl-v*"
-      - "rai-audit-llm-v*"
-      - "rai-audit-agents-v*"
-      - "rai-audit-kit-v*"
+      - "rai-check-core-v*"
+      - "rai-check-ml-v*"
+      - "rai-check-dl-v*"
+      - "rai-check-genai-v*"
+      - "rai-check-kit-v*"
 
 jobs:
   validate-and-publish:
@@ -37,9 +37,9 @@ jobs:
         id: pkg
         run: |
           TAG="${{ github.ref_name }}"
-          # Extract package name: rai-audit-core-v0.1.0 → rai-audit-core
+          # Extract package name: rai-check-core-v0.1.0 → rai-check-core
           PKG=$(echo "$TAG" | sed 's/-v[0-9].*//')
-          # Extract version: rai-audit-core-v0.1.0 → 0.1.0
+          # Extract version: rai-check-core-v0.1.0 → 0.1.0
           VERSION=$(echo "$TAG" | sed 's/.*-v//')
           echo "package=$PKG" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"

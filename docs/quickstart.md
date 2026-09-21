@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-pip install rai-audit-ml
+pip install rai-check-ml
 ```
 
 ## Run a Classification Audit
@@ -35,18 +35,18 @@ Generate a starter configuration, point it at captured predictions, and run the
 audit workflow:
 
 ```bash
-rai-audit init --project loan-model
-rai-audit run --config audit.yaml
+rai-check init --project loan-model
+rai-check run --config audit.yaml
 ```
 
-`rai-audit init` writes a small starter `predictions.csv` beside `audit.yaml`, so
+`rai-check init` writes a small starter `predictions.csv` beside `audit.yaml`, so
 the generated config can run immediately. Replace that CSV with captured model
 predictions, or update `audit.data` to point at your own file. For a classification
 audit the CSV needs `y_true` and `y_pred` columns by default.
 
 The configured runner writes the selected report formats and an
 `evidence-manifest.json` file. The manifest records input hashes, runtime details,
-installed RAI Audit package versions, the Git revision when available, and artifact
+installed RAI Check package versions, the Git revision when available, and artifact
 hashes. Configured audits also run privacy column-name screening and reproducibility
 checks by default. Add `sarif` or `junit` to `audit.report_formats` for CI-native
 outputs.
@@ -54,17 +54,17 @@ outputs.
 ## CI/CD Gate
 
 ```bash
-rai-audit gate audit-run.json --fail-on-critical
+rai-check gate audit-run.json --fail-on-critical
 ```
 
 Exits `1` on any critical finding, `0` on pass. Use in GitHub Actions:
 
 ```yaml
-- name: RAI Audit gate
-  run: rai-audit gate audit-run.json --fail-on-critical
+- name: RAI Check gate
+  run: rai-check gate audit-run.json --fail-on-critical
 ```
 
-See `packages/rai-audit-core/examples/ci-gate.yml` for a full example workflow.
+See `packages/rai-check-core/examples/ci-gate.yml` for a full example workflow.
 
 ## Monitor Batch Drift
 
@@ -91,8 +91,8 @@ report.to_json("drift-run.json")
 report.to_html("drift-report.html")
 ```
 
-See `packages/rai-audit-ml/examples/ml_drift_monitoring/batch_monitor.py` for
-sequential batch monitoring and `packages/rai-audit-ml/examples/mlops_integrations/`
+See `packages/rai-check-ml/examples/ml_drift_monitoring/batch_monitor.py` for
+sequential batch monitoring and `packages/rai-check-ml/examples/mlops_integrations/`
 for MLflow and Airflow templates.
 
 ## Audit Image Models
@@ -110,16 +110,16 @@ report = ImageClassificationAudit(
 ).run()
 ```
 
-See `packages/rai-audit-dl/examples/scientific_ai/microscopy_audit.py` and
-`packages/rai-audit-dl/examples/medical_imaging/audit_example.py`.
+See `packages/rai-check-dl/examples/scientific_ai/microscopy_audit.py` and
+`packages/rai-check-dl/examples/medical_imaging/audit_example.py`.
 
 ## Audit Agent Traces
 
 Capture tool and retrieval operations with the canonical agent trace schema, then run:
 
 ```bash
-rai-audit agents run \
-  --trace packages/rai-audit-agents/examples/customer_support_trace.json \
+rai-check genai agents run \
+  --trace packages/rai-check-genai/examples/customer_support_trace.json \
   --allowed-tools lookup_order
 ```
 
@@ -129,7 +129,7 @@ prompt injection delivered through tools, retrieval, email, or webpages.
 ## Export Model Card
 
 ```bash
-rai-audit export model-card audit-run.json \
+rai-check export model-card audit-run.json \
   --model-name "Loan Model v2" \
   --model-version "2.0.0" \
   --author "ML Team"

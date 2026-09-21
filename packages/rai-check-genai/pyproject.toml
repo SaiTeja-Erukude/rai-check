@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rai-check-genai"
+version = "0.0.1"
+description = "Generative AI audits for LLM, RAG, and agentic AI systems"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Sai Teja Erukude" }]
+requires-python = ">=3.10"
+keywords = [
+  "responsible-ai",
+  "generative-ai",
+  "llm",
+  "rag",
+  "agents",
+  "prompt-injection",
+  "hallucination",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "rai-check-core>=0.0.1",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.0"]
+anthropic = ["anthropic>=0.20"]
+
+[project.entry-points."rai_audit.plugins"]
+genai = "rai_audit.genai.cli:register"
+
+[tool.uv.sources]
+rai-check-core = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rai_audit"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""

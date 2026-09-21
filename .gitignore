@@ -28,7 +28,7 @@ htmlcov/
 .hypothesis/
 
 # Audit runtime artifacts
-.rai-audit/
+.rai-check/
 *_audit_report.html
 *_audit_report.md
 *_audit_report.json

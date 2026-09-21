@@ -1,15 +1,15 @@
-name: Test rai-audit-core
+name: Test rai-check-core
 
 on:
   push:
     branches:
       - main
     paths:
-      - "packages/rai-audit-core/**"
+      - "packages/rai-check-core/**"
       - ".github/workflows/test-core.yml"
   pull_request:
     paths:
-      - "packages/rai-audit-core/**"
+      - "packages/rai-check-core/**"
 
 jobs:
   test:
@@ -20,5 +20,5 @@ jobs:
         with:
           python-version: "3.12"
       - run: uv venv
-      - run: uv pip install -e "packages/rai-audit-core" pytest
-      - run: uv run pytest packages/rai-audit-core/tests -v
+      - run: uv pip install -e "packages/rai-check-core" pytest
+      - run: uv run pytest packages/rai-check-core/tests -v

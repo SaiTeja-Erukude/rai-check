@@ -1,6 +1,6 @@
 # Configuration Schemas
 
-RAI Audit Kit uses versioned JSON Schemas for audit configs, reports, evidence
+RAI Check Kit uses versioned JSON Schemas for audit configs, reports, evidence
 manifests, agent traces, and LLM suites. The current schema version is `1.0`.
 
 ## Versioning

@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rai-check-kit"
+version = "0.0.1"
+description = "Responsible AI (RAI) Check Kit - security, reliability, and trustworthy AI system checks"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Sai Teja Erukude" }]
+requires-python = ">=3.10"
+keywords = ["responsible-ai", "fairness", "robustness", "security", "trustworthy-ai", "audit"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "rai-check-core>=0.0.1",
+  "rai-check-ml>=0.0.1",
+]
+
+[project.optional-dependencies]
+dl = ["rai-check-dl>=0.0.1"]
+genai = ["rai-check-genai>=0.0.1"]
+all = [
+  "rai-check-dl>=0.0.1",
+  "rai-check-genai>=0.0.1",
+]
+
+[project.scripts]
+rai-check = "rai_audit.kit.cli:app"
+
+[tool.uv.sources]
+rai-check-core = { workspace = true }
+rai-check-ml = { workspace = true }
+rai-check-dl = { workspace = true }
+rai-check-genai = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rai_audit"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""

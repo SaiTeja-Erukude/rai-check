@@ -15,12 +15,11 @@ param(
 $ErrorActionPreference = "Stop"
 
 $Packages = @(
-    "rai-audit-core"
-    "rai-audit-ml"
-    "rai-audit-dl"
-    "rai-audit-llm"
-    "rai-audit-agents"
-    "rai-audit-kit"
+    "rai-check-core"
+    "rai-check-ml"
+    "rai-check-dl"
+    "rai-check-genai"
+    "rai-check-kit"
 )
 
 function Invoke-Git([string[]]$GitArgs) {

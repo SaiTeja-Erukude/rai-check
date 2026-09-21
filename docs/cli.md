@@ -1,13 +1,13 @@
 # CLI Reference
 
-All commands are available via `rai-audit` (installed by `rai-audit-core` or `rai-audit-kit`).
+All commands are available via `rai-check` (installed by `rai-check-core` or `rai-check-kit`).
 
-## `rai-audit init`
+## `rai-check init`
 
 Scaffold a starter `audit.yaml` config file.
 
 ```
-rai-audit init [--project NAME] [--output PATH]
+rai-check init [--project NAME] [--output PATH]
 ```
 
 | Option | Default | Description |
@@ -18,13 +18,13 @@ rai-audit init [--project NAME] [--output PATH]
 
 ---
 
-## `rai-audit run`
+## `rai-check run`
 
 Run an audit from `audit.yaml`, write configured report formats, create an evidence
 manifest, and enforce the configured gate.
 
 ```
-rai-audit run [--config PATH] [--enforce-gate / --no-enforce-gate]
+rai-check run [--config PATH] [--enforce-gate / --no-enforce-gate]
 ```
 
 | Option | Default | Description |
@@ -38,22 +38,22 @@ when their packages are installed.
 
 ---
 
-## `rai-audit report`
+## `rai-check report`
 
 Render an HTML, Markdown, JSON, SARIF, or JUnit report from a saved audit JSON.
 
 ```
-rai-audit report AUDIT_RUN.JSON [--format html|markdown|json|sarif|junit] [--output PATH]
+rai-check report AUDIT_RUN.JSON [--format html|markdown|json|sarif|junit] [--output PATH]
 ```
 
 ---
 
-## `rai-audit gate`
+## `rai-check gate`
 
 CI/CD deployment gate. Exits `1` on failure, `0` on pass.
 
 ```
-rai-audit gate AUDIT_RUN.JSON [--fail-on-critical] [--min-score N] [--output-json PATH]
+rai-check gate AUDIT_RUN.JSON [--fail-on-critical] [--min-score N] [--output-json PATH]
 ```
 
 | Option | Default | Description |
@@ -64,34 +64,34 @@ rai-audit gate AUDIT_RUN.JSON [--fail-on-critical] [--min-score N] [--output-jso
 
 ---
 
-## `rai-audit diff`
+## `rai-check diff`
 
 Compare two audit runs and show what changed.
 
 ```
-rai-audit diff RUN_A.JSON RUN_B.JSON [--output-json PATH]
+rai-check diff RUN_A.JSON RUN_B.JSON [--output-json PATH]
 ```
 
 ---
 
-## `rai-audit history`
+## `rai-check history`
 
 List past audit runs from the history directory.
 
 ```
-rai-audit history [--directory PATH]
+rai-check history [--directory PATH]
 ```
 
-Default directory: `.rai-audit/history`
+Default directory: `.rai-check/history`
 
 ---
 
-## `rai-audit export model-card`
+## `rai-check export model-card`
 
 Export an audit run as a Markdown model card (HuggingFace-compatible).
 
 ```
-rai-audit export model-card AUDIT_RUN.JSON [OPTIONS]
+rai-check export model-card AUDIT_RUN.JSON [OPTIONS]
 ```
 
 | Option | Default | Description |
@@ -105,56 +105,56 @@ rai-audit export model-card AUDIT_RUN.JSON [OPTIONS]
 
 ---
 
-## `rai-audit export standards-coverage`
+## `rai-check export standards-coverage`
 
 Export mapped evidence, missing evidence, and explicit non-compliance-claim
 language for standards references. Repeat `--required-ref` to define a custom
 coverage set.
 
 ```
-rai-audit export standards-coverage AUDIT_RUN.JSON [--output coverage.json] [--required-ref REF]
+rai-check export standards-coverage AUDIT_RUN.JSON [--output coverage.json] [--required-ref REF]
 ```
 
 ---
 
-## `rai-audit export history-dashboard`
+## `rai-check export history-dashboard`
 
 Export an HTML dashboard with run trends, category regressions, and artifact
 links.
 
 ```
-rai-audit export history-dashboard [--directory .rai-audit/history] [--output audit-history.html]
+rai-check export history-dashboard [--directory .rai-check/history] [--output audit-history.html]
 ```
 
 ---
 
-## `rai-audit export eu-post-market`
+## `rai-check export eu-post-market`
 
 Generate an EU AI Act-oriented post-market monitoring report from persisted audit
 history and incident annotations.
 
 ```
-rai-audit export eu-post-market [--directory .rai-audit/history] [--output eu-ai-act-post-market.md]
+rai-check export eu-post-market [--directory .rai-check/history] [--output eu-ai-act-post-market.md]
 ```
 
 ---
 
-## `rai-audit ml run`
+## `rai-check ml run`
 
-Run a classification or regression audit from the command line (installed by `rai-audit-ml`).
+Run a classification or regression audit from the command line (installed by `rai-check-ml`).
 
 ```
-rai-audit ml run --data predictions.csv --target label [OPTIONS]
+rai-check ml run --data predictions.csv --target label [OPTIONS]
 ```
 
 ---
 
-## `rai-audit llm run`
+## `rai-check genai llm run`
 
-Audit captured LLM or RAG responses from a YAML test suite (installed by `rai-audit-llm`).
+Audit captured LLM or RAG responses from a YAML test suite (installed by `rai-check-genai`).
 
 ```
-rai-audit llm run --suite packages/rai-audit-llm/examples/llm_audit_suite.yml [OPTIONS]
+rai-check genai llm run --suite packages/rai-check-genai/examples/llm_audit_suite.yml [OPTIONS]
 ```
 
 | Option | Default | Description |
@@ -162,16 +162,16 @@ rai-audit llm run --suite packages/rai-audit-llm/examples/llm_audit_suite.yml [O
 | `--audit-type` | `llm` | Audit type: `llm`, `rag`, or `rag-security` |
 | `--out` | `llm_audit_report.html` | Output report path |
 | `--format` | `html` | Report format: `html`, `markdown`, or `json` |
-| `--persist` | `true` | Save the run under `.rai-audit/history/` |
+| `--persist` | `true` | Save the run under `.rai-check/history/` |
 
 ---
 
-## `rai-audit agents run`
+## `rai-check genai agents run`
 
-Audit a captured canonical agent execution trace (installed by `rai-audit-agents`).
+Audit a captured canonical agent execution trace (installed by `rai-check-genai`).
 
 ```
-rai-audit agents run --trace agent-trace.json [OPTIONS]
+rai-check genai agents run --trace agent-trace.json [OPTIONS]
 ```
 
 | Option | Default | Description |
@@ -179,16 +179,16 @@ rai-audit agents run --trace agent-trace.json [OPTIONS]
 | `--allowed-tools` | - | Comma-separated tool allowlist |
 | `--out` | `agent_audit_report.html` | Output report path |
 | `--format` | `html` | Report format: `html`, `markdown`, or `json` |
-| `--persist` | `true` | Save the run under `.rai-audit/history/` |
+| `--persist` | `true` | Save the run under `.rai-check/history/` |
 
 ---
 
-## `rai-audit dl run`
+## `rai-check dl run`
 
-Audit recorded image classification predictions from CSV (installed by `rai-audit-dl`).
+Audit recorded image classification predictions from CSV (installed by `rai-check-dl`).
 
 ```
-rai-audit dl run --data predictions.csv --task image [OPTIONS]
+rai-check dl run --data predictions.csv --task image [OPTIONS]
 ```
 
 | Option | Default | Description |
