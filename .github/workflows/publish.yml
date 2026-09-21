@@ -23,7 +23,16 @@ on:
 jobs:
   validate-and-publish:
     runs-on: ubuntu-latest
-    environment: pypi
+    environment:
+      name: >-
+        ${{
+          startsWith(github.ref_name, 'rai-check-core-v') && 'pypi-core' ||
+          startsWith(github.ref_name, 'rai-check-ml-v') && 'pypi-ml' ||
+          startsWith(github.ref_name, 'rai-check-dl-v') && 'pypi-dl' ||
+          startsWith(github.ref_name, 'rai-check-genai-v') && 'pypi-genai' ||
+          startsWith(github.ref_name, 'rai-check-kit-v') && 'pypi-kit' ||
+          'pypi'
+        }}
     permissions:
       id-token: write  # required for PyPI trusted publishing (OIDC)
 
