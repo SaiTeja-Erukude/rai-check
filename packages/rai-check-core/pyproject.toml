@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rai-check-core"
-version = "0.0.1"
+version = "0.0.2"
 description = "Shared audit engine, findings, reports, and CLI for the RAI Check Kit"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -12,7 +12,7 @@ authors = [{ name = "Sai Teja Erukude" }]
 requires-python = ">=3.10"
 keywords = ["responsible-ai", "audit", "fairness", "trustworthy-ai"]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
