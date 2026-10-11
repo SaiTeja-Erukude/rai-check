@@ -2,6 +2,29 @@
 
 All commands are available via `rai-check` (installed by `rai-check-core` or `rai-check-kit`).
 
+## `rai-check doctor`
+
+Inspect the installation using the unified CLI supplied by `rai-check-kit`:
+
+```bash
+rai-check doctor
+rai-check doctor --json
+```
+
+Reports installed suite package versions, discovered plugin entry points and their
+load results, and optional dependency versions for installed audit packages.
+Missing packages and extras include installation commands; failed plugins include
+their errors and repair commands. JSON is written to stdout, while plugin startup
+warnings go to stderr.
+
+Exit `0` means no installation errors were found. Exit `1` indicates a missing
+required package, unreadable distribution metadata, or plugin discovery/load
+failure. Missing optional audit packages and extras are informational. Dependency
+checks inspect installation metadata without importing frameworks or testing
+provider credentials, runtime compatibility, or minimum version constraints.
+
+---
+
 ## `rai-check init`
 
 Scaffold a starter `audit.yaml` config file.

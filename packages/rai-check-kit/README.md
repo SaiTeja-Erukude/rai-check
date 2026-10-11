@@ -68,6 +68,16 @@ pip install "rai-check-kit[all]"   # all modules (dl + genai)
 rai-check ml run --help
 ```
 
+Inspect installed packages, plugin load failures, and missing optional dependencies:
+
+```bash
+rai-check doctor
+rai-check doctor --json
+```
+
+Diagnostics include installation or repair commands. Missing optional features
+are informational; installation errors return exit code `1`.
+
 For repeatable audit workflows, generate and run a YAML configuration:
 
 ```bash
