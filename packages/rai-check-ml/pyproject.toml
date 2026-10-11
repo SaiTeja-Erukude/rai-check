@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rai-check-ml"
-version = "0.0.1"
+version = "0.0.2"
 description = "Fairness, robustness, and data quality audits for traditional ML models"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -12,7 +12,7 @@ authors = [{ name = "Sai Teja Erukude" }]
 requires-python = ">=3.10"
 keywords = ["responsible-ai", "fairness", "bias", "machine-learning", "audit"]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
@@ -20,7 +20,7 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
-  "rai-check-core>=0.0.1",
+  "rai-check-core>=0.0.2",
   "numpy>=1.24",
   "pandas>=2.0",
   "scikit-learn>=1.3",
