@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rai-check-kit"
-version = "0.0.2"
+version = "0.0.3"
 description = "Responsible AI (RAI) Check Kit - security, reliability, and trustworthy AI system checks"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -20,7 +20,7 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
-  "rai-check-core>=0.0.2",
+  "rai-check-core>=0.0.3",
   "rai-check-ml>=0.0.2",
 ]
 

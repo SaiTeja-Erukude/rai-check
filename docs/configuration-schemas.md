@@ -17,6 +17,13 @@ Unsupported future versions are rejected explicitly.
 
 LLM suites using the legacy `tests` key are migrated to `cases`.
 
+LLM suite cases accept either `prompt` or an ordered `messages` array. Conversation
+messages have a `role` (`system`, `user`, or `assistant`) and `content`. An optional
+system message precedes alternating user/assistant pairs. Assistant content may
+be omitted or `null` for live Python responder calls. Captured replies use string
+content. Case-level checks apply to each assistant reply; findings identify the
+one-based message position as `evidence.turn_index`.
+
 ## Python API
 
 ```python
