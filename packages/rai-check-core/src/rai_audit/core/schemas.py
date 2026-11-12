@@ -133,13 +133,26 @@ SCHEMAS: dict[str, dict[str, Any]] = {
                 "minItems": 1,
                 "items": {
                     "type": "object",
-                    "required": ["id", "prompt"],
+                    "required": ["id"],
                     "properties": {
                         "id": _TEXT,
                         "prompt": _TEXT,
                         "type": _TEXT,
                         "checks": _STRING_LIST,
+                        "messages": {
+                            "type": "array",
+                            "minItems": 2,
+                            "items": {
+                                "type": "object",
+                                "required": ["role"],
+                                "properties": {
+                                    "role": {"enum": ["system", "user", "assistant"]},
+                                    "content": {"type": ["string", "null"]},
+                                },
+                            },
+                        },
                     },
+                    "oneOf": [{"required": ["prompt"]}, {"required": ["messages"]}],
                     "anyOf": [{"required": ["type"]}, {"required": ["checks"]}],
                     "additionalProperties": True,
                 },
