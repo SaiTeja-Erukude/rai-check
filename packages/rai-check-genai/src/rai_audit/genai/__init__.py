@@ -14,6 +14,7 @@ from rai_audit.genai.agents import (
 from rai_audit.genai.llm import (
     AnthropicResponder,
     LLMAudit,
+    LLMMessage,
     LLMTestCase,
     LLMTestSuite,
     OpenAIResponder,
@@ -32,6 +33,7 @@ __all__ = [
     "AgentTrace",
     "AnthropicResponder",
     "LLMAudit",
+    "LLMMessage",
     "LLMTestCase",
     "LLMTestSuite",
     "OWASP_AGENTIC_TOP_10_2026",

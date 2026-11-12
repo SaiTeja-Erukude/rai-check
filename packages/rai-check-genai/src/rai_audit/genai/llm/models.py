@@ -55,10 +55,41 @@ class RAGContext:
 
 
 @dataclass(frozen=True)
+class LLMMessage:
+    """A conversation message; an assistant with no content requests a live response."""
+
+    role: str
+    content: str | None = None
+
+    def __post_init__(self) -> None:
+        if self.role not in {"system", "user", "assistant"}:
+            raise ValueError("Message role must be system, user, or assistant")
+        if self.role == "assistant" and (self.content is None or isinstance(self.content, str)):
+            return
+        if not isinstance(self.content, str) or not self.content.strip():
+            raise ValueError(f"{self.role} message content must be a non-empty string")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"role": self.role, "content": self.content}
+
+
+def validate_conversation(messages: tuple[LLMMessage, ...]) -> None:
+    """Require an optional system message followed by user/assistant pairs."""
+    start = 1 if messages and messages[0].role == "system" else 0
+    turns = messages[start:]
+    if not turns or len(turns) % 2:
+        raise ValueError("Conversation messages must contain user/assistant pairs")
+    for index, message in enumerate(turns):
+        expected = "user" if index % 2 == 0 else "assistant"
+        if message.role != expected:
+            raise ValueError(f"Conversation message {start + index + 1} must have role {expected}")
+
+
+@dataclass(frozen=True)
 class LLMTestCase:
     id: str
-    prompt: str
-    checks: tuple[str, ...]
+    prompt: str = ""
+    checks: tuple[str, ...] = ()
     response: str | None = None
     expected_refusal: bool = True
     forbidden_terms: tuple[str, ...] = ()
@@ -77,9 +108,10 @@ class LLMTestCase:
     max_total_tokens: int | None = None
     max_cost_usd: float | None = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    messages: tuple[LLMMessage, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "id": self.id,
             "prompt": self.prompt,
             "checks": list(self.checks),
@@ -102,6 +134,11 @@ class LLMTestCase:
             "max_cost_usd": self.max_cost_usd,
             "metadata": dict(self.metadata),
         }
+        if self.messages:
+            result.pop("prompt")
+            result.pop("response")
+            result["messages"] = [message.to_dict() for message in self.messages]
+        return result
 
 
 @dataclass(frozen=True)

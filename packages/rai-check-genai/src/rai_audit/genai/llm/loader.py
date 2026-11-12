@@ -6,7 +6,14 @@ from typing import Any
 
 import yaml
 from rai_audit.core.schemas import SchemaDocumentError, prepare_document
-from rai_audit.genai.llm.models import SUPPORTED_CHECKS, LLMTestCase, LLMTestSuite, RAGContext
+from rai_audit.genai.llm.models import (
+    SUPPORTED_CHECKS,
+    LLMMessage,
+    LLMTestCase,
+    LLMTestSuite,
+    RAGContext,
+    validate_conversation,
+)
 
 _TYPE_CHECKS = {
     "prompt_injection": ("prompt_injection",),
@@ -84,6 +91,9 @@ def load_test_suite(path: str | Path) -> LLMTestSuite:
         seen_ids.add(case_id)
 
         checks = _checks(case, label)
+        messages = _messages(case["messages"], label) if "messages" in case else ()
+        if messages and case.get("response") is not None:
+            raise SuiteValidationError(f"{label}.response must be set on assistant messages")
         contexts = _contexts(case.get("contexts", ()), label)
         if "rag_faithfulness" in checks and not contexts:
             raise SuiteValidationError(f"{label}.contexts is required for rag_faithfulness")
@@ -91,8 +101,9 @@ def load_test_suite(path: str | Path) -> LLMTestSuite:
         cases.append(
             LLMTestCase(
                 id=case_id,
-                prompt=_required_text(case, "prompt", label),
+                prompt="" if messages else _required_text(case, "prompt", label),
                 checks=checks,
+                messages=messages,
                 response=_optional_text(case.get("response"), f"{label}.response"),
                 expected_refusal=_bool(
                     case.get("expected_refusal", True), f"{label}.expected_refusal"
@@ -167,6 +178,15 @@ def _checks(case: Mapping[str, Any], label: str) -> tuple[str, ...]:
     if not checks:
         raise SuiteValidationError(f"{label}.checks must not be empty")
     return checks
+
+
+def _messages(raw: Any, label: str) -> tuple[LLMMessage, ...]:
+    try:
+        messages = tuple(LLMMessage(role=item["role"], content=item.get("content")) for item in raw)
+        validate_conversation(messages)
+    except ValueError as exc:
+        raise SuiteValidationError(f"{label}.messages: {exc}") from exc
+    return messages
 
 
 def _contexts(raw: Any, label: str) -> tuple[RAGContext, ...]:

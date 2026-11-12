@@ -26,9 +26,12 @@ class OpenAIResponder:
 
     def __call__(self, case: LLMTestCase) -> ProviderResponse:
         started = perf_counter()
+        messages = (
+            [message.to_dict() for message in case.messages] if case.messages else case.prompt
+        )
         try:
             response = self.client.responses.create(
-                model=self.model, input=case.prompt, **self.request_options
+                model=self.model, input=messages, **self.request_options
             )
         except Exception as exc:
             if _is_rate_limit(exc):
@@ -75,12 +78,19 @@ class AnthropicResponder:
 
     def __call__(self, case: LLMTestCase) -> ProviderResponse:
         started = perf_counter()
+        options = dict(self.request_options)
+        messages = [{"role": "user", "content": case.prompt}]
+        if case.messages:
+            messages = [message.to_dict() for message in case.messages if message.role != "system"]
+            system = [message.content for message in case.messages if message.role == "system"]
+            if system:
+                options["system"] = "\n\n".join(system)
         try:
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
-                messages=[{"role": "user", "content": case.prompt}],
-                **self.request_options,
+                messages=messages,
+                **options,
             )
         except Exception as exc:
             if _is_rate_limit(exc):

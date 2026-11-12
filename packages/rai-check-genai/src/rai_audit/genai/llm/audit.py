@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import datetime, timezone
 
 from rai_audit.core.engine import BaseAudit
@@ -28,10 +29,12 @@ from rai_audit.genai.llm.checks import (
 )
 from rai_audit.genai.llm.models import (
     FaithfulnessJudge,
+    LLMMessage,
     LLMTestCase,
     LLMTestSuite,
     ProviderResponse,
     ResponseProvider,
+    validate_conversation,
 )
 
 _RAG_CHECKS = frozenset(
@@ -82,22 +85,31 @@ class LLMAudit(BaseAudit):
             if not checks:
                 continue
             audited_cases += 1
-            response = case.response
-            provider_response = None
-            if response is None and self.responder is not None:
-                response = self.responder(case)
-            if isinstance(response, ProviderResponse):
-                provider_response = response
-                response_metrics.append({"test_case": case.id, **response.to_dict()})
-                response = response.text
-            if response is None:
-                findings.append(self._missing_response_finding(case))
-                continue
-            if not isinstance(response, str):
-                raise TypeError(f"Responder for test case '{case.id}' must return a string")
-
-            for check in checks:
-                findings.append(self._run_check(check, case, response, provider_response))
+            for turn_case, turn_index, response in self._responses_for_case(case):
+                turn_evidence = (
+                    {"turn_index": turn_index, "role": "assistant"} if turn_index else {}
+                )
+                provider_response = None
+                if isinstance(response, ProviderResponse):
+                    provider_response = response
+                    response_metrics.append(
+                        {"test_case": case.id, **turn_evidence, **response.to_dict()}
+                    )
+                    response = response.text
+                if response is None:
+                    turn_findings = [self._missing_response_finding(turn_case)]
+                else:
+                    if not isinstance(response, str):
+                        raise TypeError(f"Responder for test case '{case.id}' must return a string")
+                    turn_findings = [
+                        self._run_check(check, turn_case, response, provider_response)
+                        for check in checks
+                    ]
+                for finding in turn_findings:
+                    if turn_index:
+                        finding.check_id += f"-TURN-{turn_index}"
+                        finding.evidence.update(turn_evidence)
+                    findings.append(finding)
 
         for finding in findings:
             finding.timestamp = timestamp
@@ -118,6 +130,39 @@ class LLMAudit(BaseAudit):
         if self.persist:
             save_run(report.to_dict())
         return report
+
+    def _response_for_case(self, case: LLMTestCase):
+        if case.response is None and self.responder is not None:
+            return self.responder(case)
+        return case.response
+
+    def _responses_for_case(self, case: LLMTestCase):
+        if not case.messages:
+            yield case, None, self._response_for_case(case)
+            return
+        if case.prompt or case.response is not None:
+            raise ValueError(
+                f"Conversation '{case.id}' must use messages instead of prompt/response"
+            )
+        validate_conversation(case.messages)
+        history: list[LLMMessage] = []
+        for turn_index, message in enumerate(case.messages, start=1):
+            if message.role != "assistant":
+                history.append(message)
+                continue
+            # Only the history preceding this reply is visible to the responder and judges.
+            turn_case = replace(
+                case,
+                prompt=history[-1].content,
+                response=message.content,
+                messages=tuple(history),
+            )
+            response = self._response_for_case(turn_case)
+            yield turn_case, turn_index, response
+            if response is None:
+                return  # Later turns cannot be evaluated with incomplete history.
+            text = response.text if isinstance(response, ProviderResponse) else response
+            history.append(LLMMessage(role="assistant", content=text))
 
     def _checks_for_case(self, case: LLMTestCase) -> tuple[str, ...]:
         if self.selected_checks is None:

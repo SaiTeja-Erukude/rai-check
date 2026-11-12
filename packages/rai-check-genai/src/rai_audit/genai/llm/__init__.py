@@ -2,11 +2,18 @@ from rai_audit.genai.llm.adapters import AnthropicResponder, OpenAIResponder, ru
 from rai_audit.genai.llm.audit import LLMAudit, RAGAudit, RAGSecurityAudit
 from rai_audit.genai.llm.benchmark import summarize_reports
 from rai_audit.genai.llm.loader import SuiteValidationError, load_test_suite
-from rai_audit.genai.llm.models import LLMTestCase, LLMTestSuite, ProviderResponse, RAGContext
+from rai_audit.genai.llm.models import (
+    LLMMessage,
+    LLMTestCase,
+    LLMTestSuite,
+    ProviderResponse,
+    RAGContext,
+)
 
 __all__ = [
     "AnthropicResponder",
     "LLMAudit",
+    "LLMMessage",
     "LLMTestCase",
     "LLMTestSuite",
     "OpenAIResponder",
